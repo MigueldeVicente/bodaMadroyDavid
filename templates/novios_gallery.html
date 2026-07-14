@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Galería · Novios · Boda{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">{% endblock %}
+{% block body_class %}app-page{% endblock %}
+
+{% block body %}
+<main class="page">
+  <div class="top-bar"><a class="link" href="{{ url_for('novios_logout') }}">Cerrar sesión</a></div>
+  <header class="hero">
+    <span class="ornament" aria-hidden="true">♥</span>
+    <h1>Vuestros recuerdos</h1>
+    <p class="subtitle">Fotos subidas por los invitados</p>
+  </header>
+  <section class="stats-row" aria-label="Estadísticas">
+    <div class="stat-box"><div class="num">{{ stats.guests }}</div><div class="label">Invitados</div></div>
+    <div class="stat-box"><div class="num">{{ stats.photos }}</div><div class="label">Fotos</div></div>
+  </section>
+  {% if photos %}
+    <section class="gallery-grid" aria-label="Galería de recuerdos">
+      {% for photo in photos %}
+        <article class="gallery-item">
+          <a href="{{ photo.display_url }}" target="_blank" rel="noopener"><img src="{{ photo.display_url }}" alt="Foto de {{ photo.nombre }} {{ photo.apellido1 }}" loading="lazy"></a>
+          <div class="gallery-meta"><div class="guest-name">{{ photo.nombre }} {{ photo.apellido1 }} {{ photo.apellido2 }}</div><div class="mission-label">{{ photo.mission_text }}</div></div>
+        </article>
+      {% endfor %}
+    </section>
+  {% else %}
+    <div class="empty-state card"><div class="empty-state__title">Todavía no hay fotos</div><p class="card__desc">Cuando los invitados completen sus misiones aparecerán aquí.</p></div>
+  {% endif %}
+  <footer class="footer-note">Guardado en Firebase</footer>
+</main>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/app.js') }}"></script>{% endblock %}

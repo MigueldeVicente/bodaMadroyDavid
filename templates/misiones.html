@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Tus misiones · Boda{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">{% endblock %}
+{% block body_class %}app-page{% endblock %}
+
+{% block body %}
+<main class="page">
+  <div class="top-bar"><a class="link" href="{{ url_for('salir') }}">← Cambiar invitado</a></div>
+  <header class="hero hero--missions">
+    <span class="ornament" aria-hidden="true">✦ ✦ ✦</span>
+    <p class="section-kicker">Tu álbum de boda</p>
+    <h1>Tus misiones</h1>
+    <p class="subtitle">{{ guest.nombre }} {{ guest.apellido1 }} {{ guest.apellido2 }}</p>
+  </header>
+
+  <div class="progress-wrap"><span id="progress-pill" class="progress-pill">0 de 3 misiones completadas</span></div>
+  <p class="missions-intro">Completa cada reto a tu ritmo. Tus fotos llegarán directamente al álbum de los novios.</p>
+
+  <section class="mission-list">
+    {% for mission in missions %}
+      <article class="mission-card mission-card--{{ mission.position }}">
+        <div class="mission-header"><span class="mission-number">{{ mission.position }}</span><p class="mission-text">{{ mission.text }}</p></div>
+        <div class="mission-body">
+          {% if mission.display_url %}<img class="mission-preview" src="{{ mission.display_url }}" alt="Foto de la misión {{ mission.position }}">{% else %}<img class="mission-preview" alt="" hidden>{% endif %}
+          <form data-upload-form class="upload-form" action="{{ url_for('upload_photo', mission_row_id=mission.id) }}" method="post" enctype="multipart/form-data" {% if mission.is_complete %}hidden{% endif %}>
+            <label class="upload-zone">
+              <input type="file" name="photo" accept="image/*" capture="environment">
+              <span class="icon" aria-hidden="true">⌑</span><span class="upload-hint">Toca para hacer o elegir una foto</span><span class="upload-subhint">JPG, PNG o HEIC</span>
+            </label>
+          </form>
+          <p class="mission-status {% if mission.is_complete %}done{% endif %}">{% if mission.is_complete %}¡Misión completada! Gracias por compartir.{% else %}Pendiente de foto{% endif %}</p>
+        </div>
+      </article>
+    {% endfor %}
+  </section>
+</main>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/app.js') }}"></script>{% endblock %}

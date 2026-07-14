@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f7f2e8">
+  <title>Madro & David · Boda</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Josefin+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../static/css/style.css">
+  <link rel="stylesheet" href="../static/css/curtain.css">
+  <script defer src="../static/js/app.js"></script>
+</head>
+<body class="index-page">
+  <main class="page">
+    <div class="index-bg" aria-hidden="true"><div class="index-bg__grain"></div><div class="index-bg__glow"></div></div>
+    <header class="hero hero--welcome">
+      <p class="eyebrow">Boda · 18 de julio de 2026</p>
+      <div class="botanical-line" aria-hidden="true">❦</div>
+      <h1 class="names"><span>Madro</span><span class="names__amp">&</span><span>David</span></h1>
+      <p class="date">18 de julio de 2026</p>
+      <p class="lead">Estás a punto de formar parte de nuestro álbum. Cuéntanos quién eres y acepta tus tres pequeñas misiones.</p>
+    </header>
+    <section class="card welcome-card">
+      <p class="section-kicker">Tu aventura empieza aquí</p>
+      <h2 class="card__title">Cuéntanos quién eres</h2>
+      <p class="card__desc">Con estos datos recuperaremos tus misiones si ya has participado.</p>
+      <form id="registro-form" class="form" novalidate>
+        <div class="field"><input type="text" name="nombre" id="nombre" autocomplete="given-name" required placeholder=" "><label for="nombre">Nombre</label></div>
+        <div class="field"><input type="text" name="apellido1" id="apellido1" autocomplete="family-name" required placeholder=" "><label for="apellido1">Primer apellido</label></div>
+        <div class="field"><input type="text" name="apellido2" id="apellido2" autocomplete="additional-name" required placeholder=" "><label for="apellido2">Segundo apellido</label></div>
+        <button type="submit" class="btn">Descubrir mis misiones <span aria-hidden="true">→</span></button>
+        <div id="form-alert" class="alert" role="alert" aria-live="polite"></div>
+      </form>
+    </section>
+    <footer class="footer">Con cariño, Madro & David</footer>
+  </main>
+</body>
+</html>
