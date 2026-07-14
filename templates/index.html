@@ -3,38 +3,80 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#f7f2e8">
-  <title>Madro & David · Boda</title>
+  <meta name="theme-color" content="#ead7b9">
+  <title>Madro &amp; David · Boda</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Josefin+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../static/css/style.css">
-  <link rel="stylesheet" href="../static/css/curtain.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Josefin+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../static/css/header-support.css">
+  <link rel="stylesheet" href="../static/css/form-pergamino.css">
+  <link rel="stylesheet" href="../static/css/wedding-copy.css">
+  <link rel="stylesheet" href="../static/css/curtains-stage.css">
   <script defer src="../static/js/app.js"></script>
+  <script defer src="../static/js/curtains-stage.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { min-height: 100%; margin: 0; }
+    body {
+      min-height: 100dvh;
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at 15% 15%, rgba(255,255,255,.7), transparent 24rem),
+        radial-gradient(circle at 85% 80%, rgba(185,141,91,.14), transparent 28rem),
+        #f1e4cf;
+    }
+  </style>
 </head>
 <body class="index-page">
-  <main class="page">
-    <div class="index-bg" aria-hidden="true"><div class="index-bg__grain"></div><div class="index-bg__glow"></div></div>
-    <header class="hero hero--welcome">
-      <p class="eyebrow">Boda · 18 de julio de 2026</p>
-      <div class="botanical-line" aria-hidden="true">❦</div>
-      <h1 class="names"><span>Madro</span><span class="names__amp">&</span><span>David</span></h1>
-      <p class="date">18 de julio de 2026</p>
-      <p class="lead">Estás a punto de formar parte de nuestro álbum. Cuéntanos quién eres y acepta tus tres pequeñas misiones.</p>
+  <header class="top-support" aria-hidden="true">
+    <div class="wood-medallion">
+      <span class="letter top-letter">M</span>
+      <span class="ampersand">&amp;</span>
+      <span class="letter bottom-letter">D</span>
+    </div>
+  </header>
+
+  <main class="pergamino">
+    <header class="wedding-hero">
+      <h1 class="wedding-hero__names"><span>Madro</span><span class="wedding-hero__amp">&amp;</span><span>David</span></h1>
+      <div class="wedding-hero__divider" aria-hidden="true">✦ · ✦ · ✦</div>
+      <p class="wedding-hero__date">Boda · 18 de julio de 2026</p>
+      <p class="wedding-hero__message">Estás a punto de formar parte de nuestro álbum. Cuéntanos quién eres y descubre tus tres pequeñas misiones.</p>
     </header>
-    <section class="card welcome-card">
-      <p class="section-kicker">Tu aventura empieza aquí</p>
-      <h2 class="card__title">Cuéntanos quién eres</h2>
-      <p class="card__desc">Con estos datos recuperaremos tus misiones si ya has participado.</p>
-      <form id="registro-form" class="form" novalidate>
-        <div class="field"><input type="text" name="nombre" id="nombre" autocomplete="given-name" required placeholder=" "><label for="nombre">Nombre</label></div>
-        <div class="field"><input type="text" name="apellido1" id="apellido1" autocomplete="family-name" required placeholder=" "><label for="apellido1">Primer apellido</label></div>
-        <div class="field"><input type="text" name="apellido2" id="apellido2" autocomplete="additional-name" required placeholder=" "><label for="apellido2">Segundo apellido</label></div>
-        <button type="submit" class="btn">Descubrir mis misiones <span aria-hidden="true">→</span></button>
+
+    <section class="pergamino__papel">
+      <form id="registro-form" class="formulario" novalidate>
+        <div class="intro">
+          <span class="eyebrow">Tu aventura empieza aquí</span>
+          <h2>Cuéntanos quién eres</h2>
+          <p>Con estos datos recuperaremos tus misiones si ya has participado.</p>
+        </div>
+
+        <div class="campos">
+          <div class="campo">
+            <input type="text" name="nombre" id="nombre" autocomplete="given-name" required placeholder=" ">
+            <label for="nombre">Nombre</label>
+          </div>
+          <div class="campo">
+            <input type="text" name="apellido1" id="apellido1" autocomplete="family-name" required placeholder=" ">
+            <label for="apellido1">Primer apellido</label>
+          </div>
+          <div class="campo">
+            <input type="text" name="apellido2" id="apellido2" autocomplete="additional-name" required placeholder=" ">
+            <label for="apellido2">Segundo apellido</label>
+          </div>
+        </div>
+
+        <button type="submit" class="boton-madera">Descubrir mis misiones <span class="flecha" aria-hidden="true">→</span></button>
         <div id="form-alert" class="alert" role="alert" aria-live="polite"></div>
+        <p class="firma">Con cariño, Madro &amp; David</p>
       </form>
     </section>
-    <footer class="footer">Con cariño, Madro & David</footer>
   </main>
+
+  <div class="curtain-stage" aria-hidden="true">
+    <div class="curtain-plane left"></div>
+    <div class="curtain-plane right"></div>
+  </div>
 </body>
 </html>

@@ -1,0 +1,111 @@
+:root {
+  --mission-ink: #4f3827;
+  --mission-muted: #816650;
+  --mission-paper: #f8edda;
+  --mission-line: rgba(107, 73, 41, .25);
+  --mission-accent: #96633d;
+}
+
+* { box-sizing: border-box; }
+
+.missions-page {
+  min-height: 100dvh;
+  margin: 0;
+  color: var(--mission-ink);
+  font-family: "Josefin Sans", sans-serif;
+  background:
+    radial-gradient(circle at 10% 10%, rgba(255, 255, 255, .62), transparent 22rem),
+    radial-gradient(circle at 92% 90%, rgba(185, 141, 91, .13), transparent 23rem),
+    #f1e4cf;
+}
+
+.missions-interface {
+  width: min(100%, 560px);
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: max(24px, env(safe-area-inset-top)) 20px max(36px, env(safe-area-inset-bottom));
+}
+
+.missions-back {
+  display: inline-block;
+  color: var(--mission-muted);
+  font-size: .72rem;
+  letter-spacing: .08em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.missions-heading {
+  padding: 34px 8px 27px;
+  text-align: center;
+}
+
+.missions-kicker,
+.mission-slot__label,
+.mission-slot__coming {
+  margin: 0;
+  color: var(--mission-accent);
+  font-size: .66rem;
+  font-weight: 600;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.missions-heading h1 {
+  margin: 9px 0 7px;
+  font: 600 clamp(3rem, 13vw, 4.4rem)/.86 "Cormorant Garamond", serif;
+  letter-spacing: -.045em;
+}
+
+.missions-guest {
+  margin: 0;
+  color: var(--mission-muted);
+  font: italic 1.25rem/1.2 "Cormorant Garamond", serif;
+}
+
+.missions-intro {
+  max-width: 31ch;
+  margin: 19px auto 0;
+  color: var(--mission-muted);
+  font-size: .82rem;
+  line-height: 1.55;
+}
+
+.mission-slots { display: grid; gap: 14px; }
+
+.mission-slot {
+  display: flex;
+  align-items: stretch;
+  gap: 15px;
+  min-height: 132px;
+  padding: 17px 15px;
+  overflow: hidden;
+  border: 1px solid var(--mission-line);
+  border-radius: 4px;
+  background:
+    radial-gradient(circle at 92% 15%, rgba(139, 89, 42, .12), transparent 30%),
+    repeating-radial-gradient(circle, rgba(123, 83, 47, .04) 0 1px, transparent 1px 7px),
+    var(--mission-paper);
+  box-shadow: 0 10px 25px rgba(86, 54, 27, .10), inset 0 0 30px rgba(130, 80, 38, .07);
+}
+
+.mission-slot__number {
+  display: grid;
+  flex: 0 0 43px;
+  place-items: center;
+  align-self: center;
+  width: 43px;
+  height: 43px;
+  border: 1px solid rgba(150, 99, 61, .5);
+  border-radius: 50%;
+  color: var(--mission-accent);
+  font: 600 1.22rem/1 "Cormorant Garamond", serif;
+}
+
+.mission-slot__content { display: flex; flex: 1; flex-direction: column; justify-content: center; }
+.mission-slot__content h2 { margin: 5px 0 9px; font: 600 1.45rem/1.05 "Cormorant Garamond", serif; }
+.mission-slot__coming { color: var(--mission-muted); font-size: .56rem; }
+
+@media (min-width: 600px) {
+  .missions-interface { padding-left: 28px; padding-right: 28px; }
+}

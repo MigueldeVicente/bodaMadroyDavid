@@ -1,39 +1,37 @@
 {% extends "base.html" %}
 
 {% block title %}Tus misiones · Boda{% endblock %}
-{% block styles %}<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">{% endblock %}
-{% block body_class %}app-page{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/missions-interface.css') }}">
+{% endblock %}
+{% block body_class %}missions-page{% endblock %}
 
 {% block body %}
-<main class="page">
-  <div class="top-bar"><a class="link" href="{{ url_for('salir') }}">← Cambiar invitado</a></div>
-  <header class="hero hero--missions">
-    <span class="ornament" aria-hidden="true">✦ ✦ ✦</span>
-    <p class="section-kicker">Tu álbum de boda</p>
+<main class="missions-interface">
+  <a class="missions-back" href="{{ url_for('salir') }}">← Cambiar invitado</a>
+
+  <header class="missions-heading">
+    <p class="missions-kicker">La boda de Madro &amp; David</p>
     <h1>Tus misiones</h1>
-    <p class="subtitle">{{ guest.nombre }} {{ guest.apellido1 }} {{ guest.apellido2 }}</p>
+    <p class="missions-guest">{{ guest.nombre }} {{ guest.apellido1 }} {{ guest.apellido2 }}</p>
+    <p class="missions-intro">Aquí tienes tus tres retos. Muy pronto podrás completarlos desde esta misma pantalla.</p>
   </header>
 
-  <div class="progress-wrap"><span id="progress-pill" class="progress-pill">0 de 3 misiones completadas</span></div>
-  <p class="missions-intro">Completa cada reto a tu ritmo. Tus fotos llegarán directamente al álbum de los novios.</p>
-
-  <section class="mission-list">
+  <section class="mission-slots" aria-label="Tus tres misiones">
     {% for mission in missions %}
-      <article class="mission-card mission-card--{{ mission.position }}">
-        <div class="mission-header"><span class="mission-number">{{ mission.position }}</span><p class="mission-text">{{ mission.text }}</p></div>
-        <div class="mission-body">
-          {% if mission.display_url %}<img class="mission-preview" src="{{ mission.display_url }}" alt="Foto de la misión {{ mission.position }}">{% else %}<img class="mission-preview" alt="" hidden>{% endif %}
-          <form data-upload-form class="upload-form" action="{{ url_for('upload_photo', mission_row_id=mission.id) }}" method="post" enctype="multipart/form-data" {% if mission.is_complete %}hidden{% endif %}>
-            <label class="upload-zone">
-              <input type="file" name="photo" accept="image/*" capture="environment">
-              <span class="icon" aria-hidden="true">⌑</span><span class="upload-hint">Toca para hacer o elegir una foto</span><span class="upload-subhint">JPG, PNG o HEIC</span>
-            </label>
-          </form>
-          <p class="mission-status {% if mission.is_complete %}done{% endif %}">{% if mission.is_complete %}¡Misión completada! Gracias por compartir.{% else %}Pendiente de foto{% endif %}</p>
+      <div class="mission-slot" data-mission-position="{{ mission.position }}">
+        <span class="mission-slot__number">0{{ mission.position }}</span>
+        <div class="mission-slot__content">
+          <p class="mission-slot__label">Misión {{ mission.position }}</p>
+          <h2>{{ mission.text }}</h2>
+          <p class="mission-slot__coming">Próximamente</p>
         </div>
-      </article>
+      </div>
+    {% else %}
+      <div class="mission-slot"><span class="mission-slot__number">01</span><div class="mission-slot__content"><p class="mission-slot__label">Misión 1</p><h2>Tu primera misión aparecerá aquí.</h2><p class="mission-slot__coming">Próximamente</p></div></div>
+      <div class="mission-slot"><span class="mission-slot__number">02</span><div class="mission-slot__content"><p class="mission-slot__label">Misión 2</p><h2>Tu segunda misión aparecerá aquí.</h2><p class="mission-slot__coming">Próximamente</p></div></div>
+      <div class="mission-slot"><span class="mission-slot__number">03</span><div class="mission-slot__content"><p class="mission-slot__label">Misión 3</p><h2>Tu tercera misión aparecerá aquí.</h2><p class="mission-slot__coming">Próximamente</p></div></div>
     {% endfor %}
   </section>
 </main>
 {% endblock %}
-{% block scripts %}<script src="{{ url_for('static', filename='js/app.js') }}"></script>{% endblock %}
