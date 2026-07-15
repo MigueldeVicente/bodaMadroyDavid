@@ -35,8 +35,8 @@ MISSIONS = [
     "Hazles a los novios una foto caminando.",
     "Hazte una foto con los novios.",
     "Sube una foto del atardecer.",
-    "Canta tu canción favorita y sube el vídeo.",
-    "Saca a bailar a un desconocido y sube el momento.",
+    "Haz una foto cantando tu canción favorita.",
+    "Saca a bailar a un desconocido y sube una foto del momento.",
     "Sube una foto con tus amigos tomando esa copa especial.",
     "Hazte una foto con el mayor número de personas que puedas.",
     "Hazte una foto graciosa con los novios.",
@@ -44,7 +44,7 @@ MISSIONS = [
     "Encuentra a David de las Heras y sácate una foto con él.",
     "Encuentra a María del Madroñal Sánchez y hazte una foto con ella.",
     "Hazte una foto con la persona que lleve el mejor vestido de la ceremonia.",
-    "Sube un vídeo de los novios en el altar.",
+    "Sube una foto de los novios en el altar.",
     "Sube un selfie con tus seres queridos.",
     "Hazte una foto con un grupo de 3 personas.",
     "Sube tu foto favorita de la noche.",
@@ -53,12 +53,9 @@ MISSIONS = [
 
 ALLOWED_MIME_TYPES = {
     "image/jpeg",
-    "image/png",
-    "image/webp",
-    "video/mp4",
-    "video/quicktime",
 }
 MAX_UPLOAD_BYTES = 50 * 1024 * 1024
+MISSIONS_PER_GUEST = 5
 
 
 def normalize(value: str) -> str:
@@ -107,9 +104,6 @@ app.config["MAX_CONTENT_LENGTH"] = MAX_UPLOAD_BYTES
 @transactional
 def get_or_create_guest(transaction, guest_ref, usage_ref, guest_data):
     guest_snapshot = guest_ref.get(transaction=transaction)
-    if guest_snapshot.exists:
-        return guest_snapshot.to_dict(), False
-
     usage_snapshot = usage_ref.get(transaction=transaction)
     usage_data = usage_snapshot.to_dict() if usage_snapshot.exists else {}
     counts = usage_data.get("counts", [0] * len(MISSIONS))
@@ -117,10 +111,28 @@ def get_or_create_guest(transaction, guest_ref, usage_ref, guest_data):
     if not isinstance(counts, list) or len(counts) != len(MISSIONS):
         counts = [0] * len(MISSIONS)
 
-    available = set(range(len(MISSIONS)))
-    selected = []
+    if guest_snapshot.exists:
+        document = guest_snapshot.to_dict()
+        selected = [
+            mission_id for mission_id in document.get("mission_ids", [])
+            if isinstance(mission_id, int) and 0 <= mission_id < len(MISSIONS)
+        ]
+        selected = list(dict.fromkeys(selected))[:MISSIONS_PER_GUEST]
+        created = False
+    else:
+        document = {
+            **guest_data,
+            "mission_ids": [],
+            "completed_mission_ids": [],
+            "uploads": {},
+            "created_at": datetime.now(timezone.utc),
+        }
+        selected = []
+        created = True
 
-    for _ in range(3):
+    available = set(range(len(MISSIONS))) - set(selected)
+
+    while len(selected) < MISSIONS_PER_GUEST and available:
         minimum = min(counts[index] for index in available)
         candidates = [index for index in available if counts[index] == minimum]
         chosen = random.choice(candidates)
@@ -129,22 +141,15 @@ def get_or_create_guest(transaction, guest_ref, usage_ref, guest_data):
         available.remove(chosen)
 
     now = datetime.now(timezone.utc)
-    document = {
-        **guest_data,
-        "mission_ids": selected,
-        "completed_mission_ids": [],
-        "uploads": {},
-        "created_at": now,
-        "updated_at": now,
-    }
+    document.update({"mission_ids": selected, "updated_at": now})
 
-    transaction.set(guest_ref, document)
+    transaction.set(guest_ref, document, merge=True)
     transaction.set(
         usage_ref,
         {"counts": counts, "updated_at": now},
         merge=True,
     )
-    return document, True
+    return document, created
 
 
 @app.get("/")
@@ -241,7 +246,7 @@ def upload_mission():
         return jsonify(ok=False, error="La misión no es válida."), 400
 
     if not file or not file.filename:
-        return jsonify(ok=False, error="Selecciona una foto o un vídeo."), 400
+        return jsonify(ok=False, error="Selecciona una fotografía."), 400
 
     if file.mimetype not in ALLOWED_MIME_TYPES:
         return jsonify(ok=False, error="El formato del archivo no está permitido."), 400
@@ -255,12 +260,13 @@ def upload_mission():
     if mission_id not in guest.get("mission_ids", []):
         return jsonify(ok=False, error="Esta misión no pertenece a tu registro."), 403
 
-    extension = Path(secure_filename(file.filename)).suffix.lower()
-    object_name = f"wedding_uploads/{guest_id}/{mission_id}/{uuid.uuid4().hex}{extension}"
+    date_prefix = "20260718"
+    unique_token = uuid.uuid4().hex[:8]
+    object_name = f"wedding_uploads/{date_prefix}_{unique_token}_mision-{mission_id:02d}.jpg"
     token = str(uuid.uuid4())
     blob = storage.bucket().blob(object_name)
     blob.metadata = {"firebaseStorageDownloadTokens": token}
-    blob.upload_from_file(file.stream, content_type=file.mimetype)
+    blob.upload_from_file(file.stream, content_type="image/jpeg")
 
     bucket_name = storage.bucket().name
     encoded_path = object_name.replace("/", "%2F")
@@ -276,7 +282,7 @@ def upload_mission():
             f"uploads.{mission_id}": {
                 "url": public_url,
                 "storage_path": object_name,
-                "content_type": file.mimetype,
+                "content_type": "image/jpeg",
                 "filename": secure_filename(file.filename),
                 "uploaded_at": now,
             },
@@ -284,7 +290,7 @@ def upload_mission():
         }
     )
 
-    return jsonify(ok=True, url=public_url, content_type=file.mimetype)
+    return jsonify(ok=True, url=public_url, content_type="image/jpeg")
 
 
 @app.errorhandler(413)
