@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     missions = result.missions;
     if (result.guest?.nombre) {
-      greeting.textContent = `La aventura continÃºa, ${result.guest.nombre}`;
+      greeting.textContent = `La aventura continúa, ${result.guest.nombre}`;
     }
 
     missions.forEach((mission, index) => list.appendChild(card(mission, index)));
@@ -38,16 +38,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     element.innerHTML = `
       <div class="cabecera-mision">
-        <span class="numero">${mission.completed ? 'âœ“' : index + 1}</span>
+        <span class="numero">${mission.completed ? '✓' : index + 1}</span>
         <div class="texto-mision">
           <h3>${escapeHtml(mission.text)}</h3>
-          <p>Elige una fotografÃ­a o un vÃ­deo corto.</p>
+          <p>Elige una fotografía o un vídeo corto.</p>
         </div>
       </div>
       <div class="zona-recuerdo">
         <input id="${id}" class="input-archivo" type="file" accept="image/jpeg,image/png,image/webp,video/mp4,video/quicktime">
-        <label class="boton-recuerdo" for="${id}">${mission.completed ? 'âœ“ Cambiar recuerdo' : 'ðŸ“· Elegir recuerdo'}</label>
-        <p class="estado${mission.completed ? ' completado' : ''}">${mission.completed ? 'âœ“ MisiÃ³n completada' : 'Esperando tu recuerdo.'}</p>
+        <label class="boton-recuerdo" for="${id}">${mission.completed ? '✓ Cambiar recuerdo' : '📷 Elegir recuerdo'}</label>
+        <p class="estado${mission.completed ? ' completado' : ''}">${mission.completed ? '✓ Misión completada' : 'Esperando tu recuerdo.'}</p>
         <div class="marco-recuerdo${mission.media_url ? ' visible' : ''}">
           <img class="vista-imagen${mission.media_url && mission.media_type?.startsWith('image/') ? ' visible' : ''}" alt="Vista previa del recuerdo" ${mission.media_url && mission.media_type?.startsWith('image/') ? `src="${mission.media_url}"` : ''}>
           <video class="vista-video${mission.media_url && mission.media_type?.startsWith('video/') ? ' visible' : ''}" controls playsinline ${mission.media_url && mission.media_type?.startsWith('video/') ? `src="${mission.media_url}"` : ''}></video>
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const status = element.querySelector('.estado');
       button.classList.add('bloqueado');
       status.className = 'estado subiendo';
-      status.textContent = 'Subiendo recuerdoâ€¦';
+      status.textContent = 'Subiendo recuerdo…';
 
       try {
         showPreview(element, file);
@@ -86,10 +86,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         mission.media_url = result.url;
         mission.media_type = result.content_type;
         element.classList.add('completada');
-        element.querySelector('.numero').textContent = 'âœ“';
-        button.textContent = 'âœ“ Cambiar recuerdo';
+        element.querySelector('.numero').textContent = '✓';
+        button.textContent = '✓ Cambiar recuerdo';
         status.className = 'estado completado';
-        status.textContent = 'âœ“ Recuerdo subido. MisiÃ³n completada';
+        status.textContent = '✓ Recuerdo subido. Misión completada';
         progress();
       } catch (error) {
         status.className = 'estado error';
