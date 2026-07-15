@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 from flask import Flask, jsonify, render_template, request, session
 from firebase_admin import credentials, firestore, initialize_app, storage
 from google.cloud.firestore_v1 import transactional
+from werkzeug.exceptions import HTTPException
 from werkzeug.utils import secure_filename
 
 load_dotenv()
@@ -289,6 +290,20 @@ def upload_mission():
 @app.errorhandler(413)
 def too_large(_error):
     return jsonify(ok=False, error="El archivo no puede superar los 50 MB."), 413
+
+
+@app.errorhandler(Exception)
+def unhandled_error(error):
+    if isinstance(error, HTTPException):
+        return error
+
+    app.logger.exception("Error no controlado", exc_info=error)
+    if request.path.startswith("/api/"):
+        return jsonify(
+            ok=False,
+            error="El servidor no pudo completar la operación. Revisa su configuración de Firebase.",
+        ), 500
+    return "Error interno del servidor", 500
 
 
 if __name__ == "__main__":

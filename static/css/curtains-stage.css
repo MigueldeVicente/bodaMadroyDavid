@@ -1,1 +1,156 @@
-.curtain-stage{inset:0;overflow:hidden;pointer-events:none;position:fixed;z-index:11000}.curtain-plane{background:linear-gradient(90deg,#d2d2ce 0%,#fff 9%,#e3e3de 19%,#fafaf8 31%,#d7d7d2 44%,#fff 56%,#e1e1dc 70%,#fdfdfb 84%,#d1d1cc 100%);box-shadow:inset 0 0 42px rgba(57,49,40,.15);height:100%;overflow:hidden;position:absolute;top:0;width:51%}.curtain-plane:before{animation:curtain-wave 3.8s ease-in-out infinite;background:repeating-linear-gradient(90deg,rgba(255,255,255,.38) 0 4px,rgba(79,71,61,.12) 7px 10px,rgba(255,255,255,.3) 16px 27px);content:"";inset:-5% -8%;position:absolute}.curtain-plane:after{background:linear-gradient(90deg,transparent,rgba(255,255,255,.7),transparent);content:"";height:100%;position:absolute;top:0;width:18%}.curtain-plane.left{left:0}.curtain-plane.left:after{right:0}.curtain-plane.right{right:0}.curtain-plane.right:before{animation-delay:-1.9s}.curtain-plane.right:after{left:0}.curtain-stage--open .curtain-plane.left{transform:translateX(-106%) skewY(2deg)}.curtain-stage--open .curtain-plane.right{transform:translateX(106%) skewY(-2deg)}.curtain-plane{transition:transform 2.7s cubic-bezier(.65,0,.2,1)}@keyframes curtain-wave{0%{transform:translateX(0) skewY(0) scaleX(1)}25%{transform:translateX(-1.5%) skewY(1.8deg) scaleX(1.03)}50%{transform:translateX(1%) skewY(-1.5deg) scaleX(.98)}75%{transform:translateX(-.8%) skewY(.8deg) scaleX(1.02)}100%{transform:translateX(0) skewY(0) scaleX(1)}}
+body.curtain-active {
+  overflow: hidden;
+}
+
+.top-support {
+  z-index: 10000;
+}
+
+.curtain-stage {
+  position: fixed;
+  z-index: 9999;
+  top: calc(var(--support-height) + 12px);
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+  background: transparent;
+  pointer-events: none;
+}
+
+.curtain {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50.5%;
+  overflow: hidden;
+  will-change: transform;
+  background: linear-gradient(
+    90deg,
+    #dcd7cf 0%,
+    #fffefb 8%,
+    #e7e2da 18%,
+    #fff 29%,
+    #ded9d1 40%,
+    #fffefb 53%,
+    #e3ded6 66%,
+    #fff 79%,
+    #ddd8d0 100%
+  );
+  box-shadow: inset 0 0 55px rgba(108, 96, 82, .16), 0 0 18px rgba(0, 0, 0, .08);
+  transition: transform 2.7s cubic-bezier(.72, 0, .2, 1);
+}
+
+.curtain::before {
+  content: "";
+  position: absolute;
+  inset: -5% -10%;
+  opacity: .8;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, .55) 0 4px,
+    transparent 8px 24px,
+    rgba(135, 124, 111, .13) 30px 42px
+  );
+  animation: curtain-breathe 4s ease-in-out infinite;
+}
+
+.curtain::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 28px;
+  background: linear-gradient(
+    90deg,
+    rgba(144, 134, 121, .22),
+    rgba(255, 255, 255, .62),
+    rgba(134, 123, 109, .18)
+  );
+}
+
+.curtain-left {
+  left: 0;
+  border-right: 1px solid rgba(133, 123, 111, .28);
+  transform-origin: left center;
+}
+
+.curtain-right {
+  right: 0;
+  border-left: 1px solid rgba(133, 123, 111, .28);
+  transform-origin: right center;
+}
+
+.curtain-left::after {
+  right: -14px;
+}
+
+.curtain-right::after {
+  left: -14px;
+}
+
+.curtain-right::before {
+  animation-delay: -2s;
+}
+
+.curtain-seam {
+  position: absolute;
+  z-index: 4;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    180deg,
+    rgba(175, 165, 151, .38),
+    rgba(255, 255, 255, .8) 50%,
+    rgba(159, 148, 134, .34)
+  );
+  box-shadow: 0 0 8px rgba(99, 87, 72, .18);
+  transition: opacity 250ms ease 150ms;
+}
+
+.curtain-stage.is-opening .curtain-left {
+  transform: translateX(-101%) scaleX(.93);
+}
+
+.curtain-stage.is-opening .curtain-right {
+  transform: translateX(101%) scaleX(.93);
+}
+
+.curtain-stage.is-opening .curtain-seam {
+  opacity: 0;
+}
+
+.curtain-stage.is-finished {
+  opacity: 0;
+  transition: opacity 350ms ease;
+}
+
+@keyframes curtain-breathe {
+  0%, 100% {
+    transform: translateX(0) skewY(0) scaleX(1);
+  }
+
+  35% {
+    transform: translateX(-.8%) skewY(.45deg) scaleX(1.015);
+  }
+
+  70% {
+    transform: translateX(.65%) skewY(-.4deg) scaleX(.99);
+  }
+}
+
+@media (max-width: 600px) {
+  .curtain {
+    width: 50.8%;
+    transition-duration: 2.4s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .curtain-stage {
+    display: none;
+  }
+}
