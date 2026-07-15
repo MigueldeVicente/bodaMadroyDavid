@@ -6,7 +6,11 @@ FIREBASE_SERVICE_ACCOUNT*.json
 serviceAccountKey.json
 *-firebase-adminsdk-*.json
 
+<<<<<<< HEAD
 __pycache__/
+=======
+**pycache**/
+>>>>>>> a4bb1c2e56a27ed7819972c6c0aa9c794dc0e9ab
 *.pyc
 *.pyo
 
@@ -19,4 +23,8 @@ uploads/
 .DS_Store
 Thumbs.db
 .vscode/
+<<<<<<< HEAD
 .idea/
+=======
+.idea/
+>>>>>>> a4bb1c2e56a27ed7819972c6c0aa9c794dc0e9ab
