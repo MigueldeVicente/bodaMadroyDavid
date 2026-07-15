@@ -14,9 +14,9 @@
   color: var(--mission-ink);
   font-family: "Josefin Sans", sans-serif;
   background:
-    radial-gradient(circle at 10% 10%, rgba(255, 255, 255, .62), transparent 22rem),
-    radial-gradient(circle at 92% 90%, rgba(185, 141, 91, .13), transparent 23rem),
-    #f1e4cf;
+    radial-gradient(circle at 10% 10%, rgba(255, 255, 255, .9), transparent 22rem),
+    radial-gradient(circle at 92% 90%, rgba(202, 169, 126, .10), transparent 23rem),
+    #fbf4e9;
 }
 
 .missions-interface {
