@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         <p class="estado${mission.completed ? ' completado' : ''}">${mission.completed ? '✓ Misión completada' : 'Esperando tu recuerdo.'}</p>
         <div class="marco-recuerdo${hasImage ? ' visible' : ''}">
           <img class="vista-imagen${hasImage ? ' visible' : ''}" alt="Vista previa del recuerdo" ${hasImage ? `src="${mission.media_url}"` : ''}>
-          <p class="pie-foto">Un recuerdo para Madro &amp; David</p>
+          <p class="pie-foto">Un recuerdo para David &amp; Madro</p>
         </div>
       </div>`;
 
