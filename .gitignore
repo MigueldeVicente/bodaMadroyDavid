@@ -1,9 +1,22 @@
 .env
 *.env
-__pycache__/
+.envrc
+
+FIREBASE_SERVICE_ACCOUNT*.json
+serviceAccountKey.json
+*-firebase-adminsdk-*.json
+
+**pycache**/
 *.pyc
+*.pyo
+
 .venv/
 venv/
-.envrc
-FIREBASE_SERVICE_ACCOUNT*.json
 
+*.db
+uploads/
+
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
