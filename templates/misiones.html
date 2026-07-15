@@ -1,37 +1,31 @@
-{% extends "base.html" %}
-
-{% block title %}Tus misiones · Boda{% endblock %}
-{% block styles %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/missions-interface.css') }}">
-{% endblock %}
-{% block body_class %}missions-page{% endblock %}
-
-{% block body %}
-<main class="missions-interface">
-  <a class="missions-back" href="{{ url_for('salir') }}">← Cambiar invitado</a>
-
-  <header class="missions-heading">
-    <p class="missions-kicker">La boda de Madro &amp; David</p>
-    <h1>Tus misiones</h1>
-    <p class="missions-guest">{{ guest.nombre }} {{ guest.apellido1 }} {{ guest.apellido2 }}</p>
-    <p class="missions-intro">Aquí tienes tus tres retos. Muy pronto podrás completarlos desde esta misma pantalla.</p>
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fbf4e9">
+  <title>Tus misiones · Madro &amp; David</title>
+  <link rel="stylesheet" href="../static/css/missions-interface.css">
+  <script defer src="../static/js/missions.js"></script>
+</head>
+<body>
+  <header class="cabecera-madera">
+    <div class="cabecera-contenido">
+      <div class="monograma-pequeno" aria-label="Madro y David"><div class="monograma-letras"><span>M</span><span>&amp;</span><span>D</span></div></div>
+      <h1>Madro <span>&amp;</span> David</h1>
+      <div class="cabecera-estrellas" aria-hidden="true">✦ · ✦ · ✦</div>
+      <p>Boda · 18 de julio de 2026</p>
+    </div>
   </header>
-
-  <section class="mission-slots" aria-label="Tus tres misiones">
-    {% for mission in missions %}
-      <div class="mission-slot" data-mission-position="{{ mission.position }}">
-        <span class="mission-slot__number">0{{ mission.position }}</span>
-        <div class="mission-slot__content">
-          <p class="mission-slot__label">Misión {{ mission.position }}</p>
-          <h2>{{ mission.text }}</h2>
-          <p class="mission-slot__coming">Próximamente</p>
-        </div>
-      </div>
-    {% else %}
-      <div class="mission-slot"><span class="mission-slot__number">01</span><div class="mission-slot__content"><p class="mission-slot__label">Misión 1</p><h2>Tu primera misión aparecerá aquí.</h2><p class="mission-slot__coming">Próximamente</p></div></div>
-      <div class="mission-slot"><span class="mission-slot__number">02</span><div class="mission-slot__content"><p class="mission-slot__label">Misión 2</p><h2>Tu segunda misión aparecerá aquí.</h2><p class="mission-slot__coming">Próximamente</p></div></div>
-      <div class="mission-slot"><span class="mission-slot__number">03</span><div class="mission-slot__content"><p class="mission-slot__label">Misión 3</p><h2>Tu tercera misión aparecerá aquí.</h2><p class="mission-slot__coming">Próximamente</p></div></div>
-    {% endfor %}
-  </section>
-</main>
-{% endblock %}
+  <main class="pagina">
+    <section class="panel-resumen">
+      <div><h2 id="saludo">La aventura continúa</h2><p>Cada misión se marca como completada al elegir el recuerdo que quieres compartir.</p></div>
+      <div class="contador" aria-live="polite"><div><strong id="numeroCompletadas">0/3</strong><span>completadas</span></div></div>
+    </section>
+    <section class="intro"><span class="etiqueta">Tu álbum de recuerdos</span><p>Estas son tus tres misiones. Elige una foto o un vídeo corto para cada una.</p></section>
+    <section id="listaMisiones" class="lista-misiones" aria-label="Misiones asignadas"></section>
+    <section id="mensajeFinal" class="final" aria-live="polite"><strong>✦ ¡Aventura completada! ✦</strong><p>Ya has preparado los tres recuerdos. Gracias por ayudar a construir el álbum de la boda.</p></section>
+    <p class="pie-pagina">Madro &amp; David · 18 de julio de 2026</p>
+  </main>
+</body>
+</html>
