@@ -73,21 +73,47 @@ def guest_id_for(nombre: str, apellido1: str, apellido2: str) -> str:
 
 
 def initialize_firebase():
-    project_id = os.getenv("FIREBASE_PROJECT_ID")
-    bucket_name = os.getenv("FIREBASE_STORAGE_BUCKET")
-    service_path = os.getenv("FIREBASE_SERVICE_ACCOUNT_PATH")
     service_json = os.getenv("FIREBASE_SERVICE_ACCOUNT_JSON")
 
-    if service_json:
-        credential = credentials.Certificate(json.loads(service_json))
-    elif service_path:
-        credential = credentials.Certificate(service_path)
-    else:
-        credential = credentials.ApplicationDefault()
+    if not service_json:
+        raise RuntimeError(
+            "Falta FIREBASE_SERVICE_ACCOUNT_JSON en las variables de Render."
+        )
 
-    options = {}
-    if project_id:
-        options["projectId"] = project_id
+    try:
+        service_info = json.loads(service_json)
+    except json.JSONDecodeError as error:
+        raise RuntimeError(
+            "FIREBASE_SERVICE_ACCOUNT_JSON no contiene un JSON válido."
+        ) from error
+
+    credential_project = service_info.get("project_id")
+    configured_project = os.getenv("FIREBASE_PROJECT_ID")
+
+    if not credential_project:
+        raise RuntimeError(
+            "El JSON de Firebase no contiene project_id."
+        )
+
+    if configured_project and configured_project != credential_project:
+        raise RuntimeError(
+            "Los proyectos de Firebase no coinciden: "
+            f"FIREBASE_PROJECT_ID={configured_project!r}, "
+            f"JSON project_id={credential_project!r}"
+        )
+
+    client_email = service_info.get("client_email")
+
+    print("Firebase project:", credential_project)
+    print("Firebase service account:", client_email)
+
+    credential = credentials.Certificate(service_info)
+
+    options = {
+        "projectId": credential_project,
+    }
+
+    bucket_name = os.getenv("FIREBASE_STORAGE_BUCKET")
     if bucket_name:
         options["storageBucket"] = bucket_name
 
