@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: boda-madro-y-david
+    runtime: static
+    plan: free
+    buildCommand: ""
+    staticPublishPath: .
+    autoDeployTrigger: commit
+    headers:
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
