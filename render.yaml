@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: boda-madro-y-david
+    name: bodamadroydavid
     runtime: static
     plan: free
     buildCommand: ""
